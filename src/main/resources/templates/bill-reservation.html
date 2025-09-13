@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Factura de Reservación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 94%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        /* Encabezado */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin: 0;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .header h2 {
+            font-size: 18px;
+            margin: 5px 0;
+            font-weight: normal;
+            color: #555;
+        }
+
+        .sub-header {
+            margin: 15px 0;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Bloques de información */
+        .info-section {
+            margin-bottom: 25px;
+        }
+
+        .info-box {
+            width: 48%;
+            float: left;
+            margin-bottom: 10px;
+        }
+
+        .info-box h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 3px;
+        }
+
+        .info-box p {
+            margin: 4px 0;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        /* Tabla detalle */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            border: 1px solid #000;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #000;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .highlight {
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Pie */
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 40px;
+            color: #555;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Encabezado -->
+    <div class="header">
+        <h1>COMER Y DORMIR</h1>
+        <h2>Factura de Reservación</h2>
+    </div>
+
+    <div class="sub-header">
+        <p>Se extiende la presente factura al cliente por concepto de reservación en el hotel indicado.</p>
+    </div>
+
+    <!-- Datos de factura y cliente -->
+    <div class="info-section">
+        <div class="info-box">
+            <h3>Detalles de Factura</h3>
+            <p><strong>Fecha emisión:</strong> <span th:text="${dateGereneration}">--</span></p>
+            <p><strong>Fecha pago:</strong> <span th:text="${#dates.format(bill.paymentDate, 'dd/MM/yyyy HH:mm')}">--</span></p>
+            <p><strong>Estado:</strong> <span th:text="${bill.state}">--</span></p>
+        </div>
+
+        <div class="info-box">
+            <h3>Datos del Cliente</h3>
+            <p><strong>Nombre:</strong> <span th:text="${bill.customerName}">---</span></p>
+            <p><strong>CUI:</strong> <span th:text="${bill.customerCui}">---</span></p>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <!-- Hotel destacado -->
+    <div style="margin-bottom: 20px; text-align: center;">
+        <span class="highlight">Hotel: <span th:text="${bill.hotelName}">Nombre del Hotel</span></span>
+    </div>
+
+    <!-- Detalle de reservación -->
+    <table>
+        <thead>
+        <tr>
+            <th>Habitación</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Precio por Día</th>
+            <th>Días</th>
+            <th>Descuento</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${bill.roomNumber}">101</td>
+            <td th:text="${bill.startDate}">01/01/2025</td>
+            <td th:text="${bill.endDate}">05/01/2025</td>
+            <td th:text="'Q' + ${bill.pricePerDay}">Q0.00</td>
+            <td th:text="${days}">0</td>
+            <td th:text="${bill.discountPercentage + '%'}">0%</td>
+            <td class="font-bold" th:text="'Q' + ${bill.totalPrice}">Q0.00</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Pie -->
+    <div class="footer">
+        <p>Gracias por confiar en <strong>COMER Y DORMIR</strong>.</p>
+        <p>Factura generada automáticamente por el Sistema de Reservaciones. Todos los derechos reservados © 2025</p>
+    </div>
+</div>
+</body>
+</html>

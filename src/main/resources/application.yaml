@@ -48,6 +48,7 @@ security:
 client:
   services:
     auth-identity: ${AUTH-IDENTITY_URL:http://localhost:8081}
+    hotel: ${HOTEL_URL:http://localhost:8082}
 
 
 
