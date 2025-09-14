@@ -23,7 +23,7 @@ public class BillControllerAdapter {
     private final CreatingBillInputPort creatingBillInputPort;
 
     @PostMapping("")
-    public ResponseEntity<Void> createReservation(@RequestBody @Valid CreateBillRequestDto requestDto) {
+    public ResponseEntity<Void> createBill(@RequestBody @Valid CreateBillRequestDto requestDto) {
         CreateBillCaseDto createBillCaseDto = requestDto.toCreateBillCaseDto();
         creatingBillInputPort.createBill(createBillCaseDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
