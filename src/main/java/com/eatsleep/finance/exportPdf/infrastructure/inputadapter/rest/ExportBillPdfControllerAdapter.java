@@ -1,7 +1,9 @@
 package com.eatsleep.finance.exportPdf.infrastructure.inputadapter.rest;
 
 import com.eatsleep.finance.common.infrastructure.annotation.WebAdapter;
+import com.eatsleep.finance.exportPdf.application.ports.input.ExportingPdfBillByOrderInputPort;
 import com.eatsleep.finance.exportPdf.application.ports.input.ExportingPdfBillByReservationIdInputPort;
+import com.eatsleep.finance.exportPdf.application.usecase.BillPdfOrderCaseDto;
 import com.eatsleep.finance.exportPdf.application.usecase.BillPdfReservationCaseDto;
 import com.eatsleep.finance.exportPdf.infrastructure.inputadapter.dto.BillReservationRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import org.springframework.core.io.Resource;
 public class ExportBillPdfControllerAdapter {
 
     private final ExportingPdfBillByReservationIdInputPort exportingPdfBillByReservationIdInputPort;
+    private final ExportingPdfBillByOrderInputPort exportingPdfBillByOrderInputPort;
 
     @PostMapping("/bill/reservation")
     public ResponseEntity<Resource> exportBillReservation(@RequestBody BillReservationRequestDto bill){
@@ -40,4 +43,21 @@ public class ExportBillPdfControllerAdapter {
                         .toString())
                 .body(resource);
     }
+
+    @PostMapping("/bill/order")
+    public ResponseEntity<Resource> exportBillOrder(@RequestBody BillPdfOrderCaseDto bill){
+
+        ByteArrayResource resource = exportingPdfBillByOrderInputPort.exportPdfBillByOrder(bill);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment()
+                        .filename("bill-order.pdf")
+                        .build()
+                        .toString())
+                .body(resource);
+    }
+
+
 }

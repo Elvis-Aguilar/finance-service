@@ -9,4 +9,7 @@ import java.util.UUID;
 public interface BillDBRepository extends JpaRepository<BillDBEntity, UUID> {
 
     Optional<BillDBEntity> findByReservationId(UUID reservationId);
+
+    Optional<BillDBEntity> findByOrderId(UUID orderId);
+
 }

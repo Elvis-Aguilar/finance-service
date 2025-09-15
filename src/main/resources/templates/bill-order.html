@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Factura de Orden - Comer y Dormir</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 94%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin: 0;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .header h2 {
+            font-size: 20px;
+            margin: 5px 0 0 0;
+            color: #555;
+        }
+
+        .info-section {
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            width: 48%;
+            float: left;
+            margin-bottom: 10px;
+        }
+
+        .info-box h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .info-box p {
+            margin: 4px 0;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border: 1px solid #000;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #000;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .totals {
+            margin-top: 20px;
+            width: 40%;
+            float: right;
+        }
+
+        .totals table {
+            border: none;
+        }
+
+        .totals td {
+            border: none;
+            padding: 6px 8px;
+        }
+
+        .totals .label {
+            text-align: left;
+        }
+
+        .totals .value {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 50px;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Encabezado -->
+    <div class="header">
+        <h1>COMER Y DORMIR</h1>
+        <h2>Factura de Consumo</h2>
+        <p><em>Se extiende la presente factura por los consumos realizados en el restaurante.</em></p>
+    </div>
+
+    <!-- Datos de factura y cliente -->
+    <div class="info-section">
+        <div class="info-box">
+            <h3>Detalles de Factura</h3>
+            <p><strong>Fecha emisión:</strong> <span th:text="${dateGereneration}">--</span></p>
+            <p><strong>Fecha de orden:</strong> <span th:text="${bill.createdAt}">--</span></p>
+            <p><strong>Restaurante:</strong> <span th:text="${bill.restaurantName}">---</span></p>
+        </div>
+
+        <div class="info-box">
+            <h3>Datos del Cliente</h3>
+            <p><strong>Nombre:</strong> <span th:text="${bill.customerName}">---</span></p>
+            <p><strong>CUI:</strong> <span th:text="${bill.customerCui}">---</span></p>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <!-- Detalle de orden -->
+    <table>
+        <thead>
+        <tr>
+            <th>Cantidad</th>
+            <th>Platillo</th>
+            <th>Precio Unitario</th>
+            <th>Costo Unitario</th>
+            <th>Descuento (%)</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detail : ${bill.details}">
+            <td th:text="${detail.quantity}">0</td>
+            <td th:text="${detail.dishName}">---</td>
+            <td th:text="'Q' + ${detail.unitPrice}">Q0.00</td>
+            <td th:text="'Q' + ${detail.unitCost}">Q0.00</td>
+            <td th:text="'%' + ${detail.discountPercentage}">0%</td>
+            <td th:text="'Q' + ${detail.subtotal}">Q0.00</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Totales -->
+    <div class="totals">
+        <table>
+            <tr>
+                <td class="label">Descuento global:</td>
+                <td class="value" th:text="'%' + ${bill.discountPercentage}">0%</td>
+            </tr>
+            <tr>
+                <td class="label">Total a pagar:</td>
+                <td class="value" th:text="'Q' + ${bill.totalPrice}">Q0.00</td>
+            </tr>
+        </table>
+    </div>
+    <div class="clearfix"></div>
+
+    <!-- Pie -->
+    <div class="footer">
+        <p>Factura generada automáticamente por el Sistema de Comer y Dormir. Todos los derechos reservados © 2025</p>
+    </div>
+</div>
+</body>
+</html>

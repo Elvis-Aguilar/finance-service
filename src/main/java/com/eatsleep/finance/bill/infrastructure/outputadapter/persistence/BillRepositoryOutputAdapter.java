@@ -1,5 +1,6 @@
 package com.eatsleep.finance.bill.infrastructure.outputadapter.persistence;
 
+import com.eatsleep.finance.bill.application.ports.output.FindingBillByOrderIdOutputPort;
 import com.eatsleep.finance.bill.application.ports.output.FindingBillByReservationIdOutputPort;
 import com.eatsleep.finance.bill.application.ports.output.StoringBillOutputPort;
 import com.eatsleep.finance.bill.domain.BillDomainEntity;
@@ -14,7 +15,8 @@ import java.util.UUID;
 
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class BillRepositoryOutputAdapter implements StoringBillOutputPort, FindingBillByReservationIdOutputPort {
+public class BillRepositoryOutputAdapter implements StoringBillOutputPort, FindingBillByReservationIdOutputPort,
+        FindingBillByOrderIdOutputPort {
 
     private final BillDBRepository billDBRepository;
     private final BillPersistenceMapper mapper;
@@ -29,6 +31,12 @@ public class BillRepositoryOutputAdapter implements StoringBillOutputPort, Findi
     @Override
     public Optional<BillDomainEntity> findBillByReservationId(UUID reservationId) {
         return billDBRepository.findByReservationId(reservationId)
+                .map(mapper::toDomainEntity);
+    }
+
+    @Override
+    public Optional<BillDomainEntity> findBillByOrderId(UUID orderId) {
+        return billDBRepository.findByOrderId(orderId)
                 .map(mapper::toDomainEntity);
     }
 }
